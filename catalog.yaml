@@ -38,6 +38,15 @@ registry:
         env: BRAVE_API_KEY
         example: BSA-your-key
 
+  exa:
+    # Hosted Exa MCP. Free tier works without a key; optional EXA_API_KEY raises limits
+    # (add headers.x-api-key: $EXA_API_KEY once the key is set in .env).
+    description: Exa AI web search and page fetch (semantic / AI-oriented)
+    title: Exa Search
+    remote:
+      url: https://mcp.exa.ai/mcp
+      transport_type: streamable
+
   context7-docs:
     description: Library and API documentation lookup (Context7)
     title: Context7 Docs
