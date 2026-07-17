@@ -2,7 +2,7 @@
 # Build + push searxng-mcp image to Docker Hub.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-IMAGE="${SEARXNG_MCP_IMAGE:-xbeta/mcp-search-searxng:latest}"
+IMAGE="${SEARXNG_MCP_IMAGE:-xbeta/mcp-search:latest}"
 PLATFORM="${PLATFORM:-linux/amd64}"
 
 cd "$ROOT"

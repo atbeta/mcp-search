@@ -45,7 +45,7 @@ services:
       retries: 3
 
   searxng-mcp:
-    image: ${SEARXNG_MCP_IMAGE:-xbeta/mcp-search-searxng:latest}
+    image: ${SEARXNG_MCP_IMAGE:-xbeta/mcp-search:latest}
     build:
       context: ./searxng-mcp
       dockerfile: Dockerfile

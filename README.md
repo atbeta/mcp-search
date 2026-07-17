@@ -15,7 +15,7 @@ No routing facade — backends are exposed as their native MCP tools. Usage poli
 | Layer | Role |
 |-------|------|
 | `docker/mcp-gateway` | Single streamable-HTTP entry on `:8812` |
-| SearXNG + `xbeta/mcp-search-searxng` | **Always on**, no API key |
+| SearXNG + `xbeta/mcp-search` | **Always on**, no API key |
 | Optional Hub MCP images | Tavily / Firecrawl **cloud** / Brave / ArXiv |
 | Optional remotes | Context7, DeepWiki |
 
@@ -83,7 +83,7 @@ The only custom image is the thin SearXNG MCP adapter (`linux/amd64`):
 ./scripts/push.sh           # buildx --platform linux/amd64 --push
 
 # on 101 / cloud
-docker pull xbeta/mcp-search-searxng:latest
+docker pull xbeta/mcp-search:latest
 docker compose up -d --no-build
 ```
 

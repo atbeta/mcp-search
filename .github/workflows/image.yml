@@ -28,5 +28,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            xbeta/mcp-search-searxng:latest
-            xbeta/mcp-search-searxng:${{ github.sha }}
+            xbeta/mcp-search:latest
+            xbeta/mcp-search:${{ github.sha }}

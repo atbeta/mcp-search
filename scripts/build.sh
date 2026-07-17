@@ -2,7 +2,7 @@
 # Build (and optionally --push) the searxng-mcp image.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-IMAGE="${SEARXNG_MCP_IMAGE:-xbeta/mcp-search-searxng:latest}"
+IMAGE="${SEARXNG_MCP_IMAGE:-xbeta/mcp-search:latest}"
 PLATFORM="${PLATFORM:-linux/amd64}"
 
 PUSH=0
