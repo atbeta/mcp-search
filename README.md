@@ -76,11 +76,11 @@ Gateway secrets file is the same `.env` (dotted aliases included for Docker MCP 
 
 Develop on your laptop (OrbStack/Docker Desktop). **Do not build on the server** — push Hub, then pull on VPS/lab hosts.
 
-The only custom image is the thin SearXNG MCP adapter (`linux/amd64`):
+The Hub image **`xbeta/mcp-search`** is the SearXNG MCP sidecar used by compose (`linux/amd64`; full entry is still `docker compose up`):
 
 ```bash
 # on Mac (docker login as xbeta)
-./scripts/push.sh           # buildx --platform linux/amd64 --push
+./scripts/push.sh           # buildx --platform linux/amd64 --push → xbeta/mcp-search:latest
 
 # on 101 / cloud
 docker pull xbeta/mcp-search:latest
