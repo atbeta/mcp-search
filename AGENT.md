@@ -22,3 +22,9 @@ This distribution exposes raw backend tools (no routing facade). Prefer tools in
 2. Do not chain SearXNG + Tavily + Brave + Firecrawl for the same query.
 3. Firecrawl has many tools — start with search/scrape; skip monitor/agent long-tail by default.
 4. On cloud hosts, assume the gateway is loopback-bound; reach it via SSH tunnel or a reverse proxy with auth — do not publish `:8812` to the open internet unauthenticated.
+
+## Brave Answers
+
+Brave sells **Search** and **Answers** as separate API products/keys.
+The official `mcp/brave-search` image today exposes Search-family tools (`brave_web_search`, `brave_summarizer`, `brave_llm_context`, …).
+A dedicated `brave_answers` tool is tracked upstream (PR #315) and is **not** something we implement ourselves yet — leave `BRAVE_ANSWERS_API_KEY` as a placeholder until the released image documents it.

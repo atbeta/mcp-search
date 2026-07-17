@@ -67,4 +67,4 @@ registry:
       - name: ARXIV_STORAGE_PATH
         value: /app/papers
     volumes:
-      - arxiv-papers:/app/papers
+      - ./data/arxiv:/app/papers
