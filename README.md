@@ -74,11 +74,17 @@ Gateway secrets file is the same `.env` (dotted aliases included for Docker MCP 
 
 ## Build / push image (Docker Hub)
 
-The only custom image is the thin SearXNG MCP adapter:
+Develop on your laptop (OrbStack/Docker Desktop). **Do not build on the server** — push Hub, then pull on VPS/lab hosts.
+
+The only custom image is the thin SearXNG MCP adapter (`linux/amd64`):
 
 ```bash
-./scripts/build.sh          # local tag xbeta/mcp-search-searxng:latest
-./scripts/push.sh           # buildx --push (needs docker login as xbeta)
+# on Mac (docker login as xbeta)
+./scripts/push.sh           # buildx --platform linux/amd64 --push
+
+# on 101 / cloud
+docker pull xbeta/mcp-search-searxng:latest
+docker compose up -d --no-build
 ```
 
 CI: see `.github/workflows/image.yml`.
