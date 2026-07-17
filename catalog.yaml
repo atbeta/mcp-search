@@ -68,3 +68,9 @@ registry:
         value: /app/papers
     volumes:
       - ./data/arxiv:/app/papers
+
+  npm-fetch-mcp-local:
+    description: npm registry (search/package/downloads) + safe public URL to Markdown
+    title: NPM + URL Fetch
+    type: server
+    image: developer-research-mcp:latest

@@ -15,6 +15,7 @@ This distribution exposes raw backend tools (no routing facade). Prefer tools in
 | Library docs | Context7 (`resolve-library-id` → `query-docs`) | Blind web scrape of docs |
 | Public GitHub architecture Q&A | DeepWiki tools | |
 | Papers | ArXiv tools | |
+| npm 包 / 读公开 URL | `npm_search_packages` / `fetch_url_markdown`（npm-fetch） | |
 
 ## Rules
 
