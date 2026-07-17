@@ -1,0 +1,3 @@
+# Minimal config for docker/mcp-gateway (filesystem MCP not enabled by mcp-search).
+filesystem:
+  paths: []

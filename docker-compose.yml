@@ -1,0 +1,81 @@
+name: mcp-search
+
+x-gateway-common: &gateway-common
+  image: docker/mcp-gateway:latest
+  platform: linux/amd64
+  restart: unless-stopped
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./catalog.yaml:/root/.docker/mcp/catalogs/catalog.yaml:ro
+    - ./config.yaml:/root/.docker/mcp/config.yaml:ro
+    - ./.env:/root/.docker/mcp/.env:ro
+  environment:
+    DOCKER_MCP_ALLOW_INSECURE_REMOTE_URLS: "1"
+    # Allow arxiv paper volume / optional host binds
+    MCP_GATEWAY_DOCKER_BIND_ALLOW_WRITABLE_PATHS: ${MCP_GATEWAY_DOCKER_BIND_ALLOW_WRITABLE_PATHS:-/tmp:./data}
+
+services:
+  valkey:
+    image: valkey/valkey:8-alpine
+    restart: unless-stopped
+    command: ["valkey-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  searxng:
+    image: searxng/searxng:latest
+    restart: unless-stopped
+    depends_on:
+      - valkey
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    environment:
+      SEARXNG_BASE_URL: ${SEARXNG_BASE_URL:-http://127.0.0.1:8080/}
+      SEARXNG_SECRET: ${SEARXNG_SECRET:-changeme}
+    # Not published by default — only gateway/searxng-mcp talk to it.
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  searxng-mcp:
+    image: ${SEARXNG_MCP_IMAGE:-xbeta/mcp-search-searxng:latest}
+    build:
+      context: ./searxng-mcp
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    user: "1000:1000"
+    depends_on:
+      - searxng
+    environment:
+      SEARXNG_URL: http://searxng:8080
+      MCP_PORT: "8001"
+    # No host ports — only on compose network.
+
+  mcp-search:
+    <<: *gateway-common
+    depends_on:
+      - searxng-mcp
+    command:
+      - --transport=streaming
+      - --port=8812
+      - --servers=${MCP_SEARCH_SERVERS:-searxng-mcp-local}
+      - --additional-catalog=/root/.docker/mcp/catalogs/catalog.yaml
+      - --config=/root/.docker/mcp/config.yaml
+      - --secrets=/root/.docker/mcp/.env
+      - --log-calls=true
+      - --watch=true
+      - --verify-signatures=false
+      - --allow-unauthenticated
+    ports:
+      - "${MCP_SEARCH_BIND:-127.0.0.1}:${MCP_SEARCH_PORT:-8812}:8812"
+
+volumes:
+  # Used when arxiv-mcp-server is enabled (see catalog.yaml).
+  arxiv-papers:

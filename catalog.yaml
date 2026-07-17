@@ -1,0 +1,70 @@
+# mcp-search catalog — Docker MCP Gateway additional catalog.
+# Enable servers via MCP_SEARCH_SERVERS in .env (compose interpolates into gateway).
+registry:
+  searxng-mcp-local:
+    description: Local SearXNG meta-search (no API key)
+    title: SearXNG
+    remote:
+      url: http://searxng-mcp:8001/mcp
+      transport_type: http
+
+  tavily:
+    description: Web search and extract via Tavily API
+    title: Tavily
+    type: server
+    image: mcp/tavily:latest
+    secrets:
+      - name: tavily.api_key
+        env: TAVILY_API_KEY
+        example: tvly-your-key
+
+  firecrawl:
+    description: Web scrape/crawl/search via Firecrawl cloud API (not self-hosted)
+    title: Firecrawl
+    type: server
+    image: mcp/firecrawl:latest
+    secrets:
+      - name: firecrawl.api_key
+        env: FIRECRAWL_API_KEY
+        example: fc-your-key
+
+  brave:
+    description: Brave Search API (web/news/images/…)
+    title: Brave Search
+    type: server
+    image: mcp/brave-search:latest
+    secrets:
+      - name: brave.api_key
+        env: BRAVE_API_KEY
+        example: BSA-your-key
+
+  context7-docs:
+    description: Library and API documentation lookup (Context7)
+    title: Context7 Docs
+    remote:
+      url: https://mcp.context7.com/mcp
+      transport_type: streamable
+      headers:
+        CONTEXT7_API_KEY: $CONTEXT7_API_KEY
+    secrets:
+      - name: context7-docs.api_key
+        env: CONTEXT7_API_KEY
+        example: ctx7sk-your-key
+
+  deepwiki:
+    description: Public GitHub repository Q&A and architecture docs
+    title: DeepWiki
+    remote:
+      url: https://mcp.deepwiki.com/mcp
+      transport_type: streamable
+
+  arxiv-mcp-server:
+    description: ArXiv papers with local markdown storage
+    title: ArXiv
+    type: server
+    image: mcp/arxiv-mcp-server:latest
+    env:
+      - name: ARXIV_STORAGE_PATH
+        value: /app/papers
+    volumes:
+      - arxiv-papers:/app/papers
